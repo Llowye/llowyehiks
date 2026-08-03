@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalkulator Refund</title>
+<style>
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Quicksand', 'Segoe UI', sans-serif;
+    background:#FFF6D6; /* kuning soft pucat */
+    color:#000000;
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center;
+    padding:30px 16px;
+  }
+  h1{
+    font-size:22px; margin-bottom:22px; text-align:center; color:#000000;
+  }
+  .card{
+    background:#FFFDF5;
+    border:1px solid #EFE3A8;
+    border-radius:16px;
+    padding:22px;
+    width:100%; max-width:380px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.08);
+  }
+  label{
+    display:block; font-size:13px; font-weight:700; color:#000000;
+    margin-bottom:6px; margin-top:14px;
+  }
+  label:first-of-type{margin-top:0;}
+  input, select{
+    width:100%; padding:10px 12px; font-size:14px;
+    border:1px solid #E0D48A; border-radius:10px;
+    background:#FFFFFF; color:#000000;
+  }
+  button{
+    width:100%; margin-top:20px; padding:12px;
+    background:#000000; color:#FFF6D6;
+    font-weight:700; font-size:15px;
+    border:none; border-radius:999px; cursor:pointer;
+  }
+  button:active{transform:scale(0.97);}
+  .hasil-box{
+    margin-top:20px; padding:16px;
+    background:#FFF6D6; border:1px dashed #C9B84A;
+    border-radius:12px; text-align:center;
+  }
+  .hasil-box h2{font-size:13px; color:#000000; margin-bottom:6px;}
+  .hasil-box .angka{font-size:22px; font-weight:800; color:#000000;}
+  footer{
+    margin-top:24px; font-size:12px; color:#000000; text-align:center;
+  }
+  footer a{color:#000000; font-weight:700; text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<h1>🧮 Kalkulator Refund Aplikasi</h1>
+
+<div class="card">
+  <label for="hargaBeli">Harga Beli (Rp)</label>
+  <input type="number" id="hargaBeli" placeholder="Contoh: 50000">
+
+  <label for="sisaHari">Sisa Masa Aktif (Hari)</label>
+  <input type="number" id="sisaHari" placeholder="Contoh: 20">
+
+  <label for="totalDurasi">Total Durasi Pembelian (Hari)</label>
+  <input type="number" id="totalDurasi" placeholder="Contoh: 25">
+
+  <label for="rateRefund">Rate Refund</label>
+  <select id="rateRefund">
+    <option value="0.70">0.70 — Pemakaian kurang dari seminggu</option>
+    <option value="0.60">0.60 — Belum pernah claim garansi, lebih dari seminggu</option>
+    <option value="0.55">0.55 — Sudah pernah claim garansi 1x-3x</option>
+    <option value="0.50">0.50 — Sudah pernah claim garansi lebih dari 3x</option>
+  </select>
+
+  <label for="diskon">Diskon Tambahan (%)</label>
+  <input type="number" id="diskon" placeholder="Contoh: 0" value="0">
+
+  <button onclick="hitungRefund()">Hitung</button>
+
+  <div class="hasil-box">
+    <h2>Hasil Refund</h2>
+    <div class="angka" id="hasilRefund">-</div>
+  </div>
+</div>
+
+<footer>
+  © 2026 Web ini dibuat oleh <a href="#">Nenek Llowye</a>
+</footer>
+
+<script>
+function hitungRefund(){
+  const hargaBeli = parseFloat(document.getElementById('hargaBeli').value) || 0;
+  const sisaHari = parseFloat(document.getElementById('sisaHari').value) || 0;
+  const totalDurasi = parseFloat(document.getElementById('totalDurasi').value) || 0;
+  const rate = parseFloat(document.getElementById('rateRefund').value) || 0;
+  const diskon = parseFloat(document.getElementById('diskon').value) || 0;
+
+  const hasilEl = document.getElementById('hasilRefund');
+
+  if(totalDurasi <= 0){
+    hasilEl.textContent = "Total durasi harus diisi ya!";
+    return;
+  }
+
+  let refund = (hargaBeli / totalDurasi) * sisaHari * rate;
+  refund = refund - (refund * (diskon / 100));
+  refund = Math.max(0, Math.round(refund));
+
+  hasilEl.textContent = "Rp " + refund.toLocaleString('id-ID');
+}
+</script>
+
+</body>
+</html>
